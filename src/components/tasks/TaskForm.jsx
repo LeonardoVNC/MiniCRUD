@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
-const TaskForm = ({currentTask, onTaskUpdated}) => {
+const TaskForm = ({ currentTask, onTaskUpdated }) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [status, setStatus] = useState("Pendiente");
@@ -16,11 +16,11 @@ const TaskForm = ({currentTask, onTaskUpdated}) => {
         }
     }, [currentTask]);
 
-    const handleSubmit = async() => {
+    const handleSubmit = async () => {
         if (currentTask) {
-            await axios.put(`${API_URL}/tasks/${currentTask._id}`, {titulo: title, descripcion: description, estado: status})
+            await axios.put(`${API_URL}/tasks/${currentTask._id}`, { titulo: title, descripcion: description, estado: status })
         } else {
-            await axios.post(`${API_URL}/tasks`, {titulo: title, descripcion: description});
+            await axios.post(`${API_URL}/tasks`, { titulo: title, descripcion: description });
         }
         onTaskUpdated();
         setTitle('');
@@ -28,6 +28,12 @@ const TaskForm = ({currentTask, onTaskUpdated}) => {
         setStatus("Pendiente");
     }
 
+    const handleCancelEdit = () => {
+        onTaskUpdated();
+        setTitle('');
+        setDescription('');
+        setStatus("Pendiente");
+    }
     return (
         <form onSubmit={handleSubmit}>
             <input
@@ -42,13 +48,13 @@ const TaskForm = ({currentTask, onTaskUpdated}) => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
             />
-            {(currentTask && 
+            {(currentTask &&
                 <div>
                     <label>
                         <input
                             type="radio"
                             value="Pendiente"
-                            checked={status=="Pendiente"}
+                            checked={status == "Pendiente"}
                             onChange={(e) => setStatus(e.target.value)}
                         />
                         Pendiente
@@ -57,14 +63,19 @@ const TaskForm = ({currentTask, onTaskUpdated}) => {
                         <input
                             type="radio"
                             value="Completado"
-                            checked={status=="Completado"}
+                            checked={status == "Completado"}
                             onChange={(e) => setStatus(e.target.value)}
                         />
                         Completada
                     </label>
                 </div>
             )}
-            <button type="submit">{currentTask ? 'Actualizar' : 'Agregar'} Tarea</button>
+            <div>
+                <button type="submit">{currentTask ? 'Actualizar' : 'Agregar'} Tarea</button>
+                {(currentTask &&
+                    <button className="button-delete" onClick={handleCancelEdit} >Cancelar</button>
+                )}
+            </div>
         </form>
     );
 }

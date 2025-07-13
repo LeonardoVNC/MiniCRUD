@@ -25,7 +25,7 @@ const TaskList = ({onDelete, onEdit}) => {
                         <p>{task.descripcion}</p>
                         <p>Estado actual: {task.estado}</p>
                         <button onClick={() => onEdit(task)} >Editar</button>
-                        <button onClick={() => {onDelete(task._id); fetchTasks();}} >Eliminar</button>
+                        <button onClick={() => {onDelete(task._id); fetchTasks();}} className='button-delete' >Eliminar</button>
                     </li>
                 ))}
             </ul>
