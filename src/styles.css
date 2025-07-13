@@ -37,6 +37,12 @@ textarea {
   border-radius: 4px;
 }
 
+label, input[type="radio"] {
+  cursor: pointer;
+  position: relative;
+  margin: 25px 10px;
+}
+
 button {
   padding: 15px 10px;
   background-color: #28a745;
