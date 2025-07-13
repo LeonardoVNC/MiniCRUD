@@ -1,25 +1,39 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { useState } from 'react';
+import axios from 'axios';
+import TaskForm from './components/tasks/TaskForm';
+import TaskList from './components/tasks/TaskList';
 
-function App() {
+const API_URL = process.env.REACT_APP_API_URL;
+
+const App = () => {
+  const [currentTask, setCurrentTask] = useState(null);
+
+  const handleDelete = async (id) => {
+    await axios.delete(`${API_URL}/tasks/${id}`);
+    refreshList();
+    setCurrentTask(null);
+  }
+
+  const handleEdit = (task) => {
+    setCurrentTask(task);
+  }
+
+  const handleTaskUpdated = (task) => {
+    setCurrentTask(null);
+    refreshList();
+  }
+
+  const refreshList = () => {
+
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Gestor de Tareas</h1>
+      <TaskForm currentTask={currentTask} onTaskUpdated={handleTaskUpdated} />
+      <TaskList onDelete={handleDelete} onEdit={handleEdit} />
     </div>
   );
-}
-
+};
 export default App;
