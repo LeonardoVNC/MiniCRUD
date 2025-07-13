@@ -6,11 +6,12 @@ const API_URL = process.env.REACT_APP_API_URL;
 const TaskList = ({onDelete, onEdit}) => {
     const [tasks, setTasks] = useState([]);
 
+    const fetchTasks = async () => {
+        const response = await axios.get(`${API_URL}/tasks`);
+        setTasks(response.data);
+    };
+
     useEffect(() => {
-        const fetchTasks = async () => {
-            const response = await axios.get(`${API_URL}/tasks`);
-            setTasks(response.data);
-        };
         fetchTasks();
     }, []);
 
@@ -24,7 +25,7 @@ const TaskList = ({onDelete, onEdit}) => {
                         <p>{task.descripcion}</p>
                         <p>Estado actual: {task.estado}</p>
                         <button onClick={() => onEdit(task)} >Editar</button>
-                        <button onClick={() => onDelete(task._id)} >Eliminar</button>
+                        <button onClick={() => {onDelete(task._id); fetchTasks();}} >Eliminar</button>
                     </li>
                 ))}
             </ul>

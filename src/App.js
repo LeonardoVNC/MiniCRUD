@@ -11,7 +11,6 @@ const App = () => {
 
   const handleDelete = async (id) => {
     await axios.delete(`${API_URL}/tasks/${id}`);
-    refreshList();
     setCurrentTask(null);
   }
 
@@ -21,11 +20,6 @@ const App = () => {
 
   const handleTaskUpdated = (task) => {
     setCurrentTask(null);
-    refreshList();
-  }
-
-  const refreshList = () => {
-
   }
 
   return (
